@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Web Skills Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        /* RESPONSIVE DESIGN WITH MEDIA QUERIES */
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* INTERACTIVE QUIZ STYLES */
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e9ecef;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .option.correct {
+            background: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+
+        .option.wrong {
+            background: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+
+        .quiz-controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 15px;
+        }
+
+        /* IMAGE CAROUSEL STYLES */
+        .carousel-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+        .carousel-prev {
+            left: 10px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .carousel-next {
+            right: 10px;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .carousel-dots {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .dot.active {
+            background: #667eea;
+        }
+
+        /* API DATA DISPLAY STYLES */
+        .api-data {
+            display: grid;
+            gap: 20px;
+        }
+
+        .weather-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .weather-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .weather-card .temp {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .joke-card {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* MEDIA QUERIES FOR RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .carousel img {
+                height: 200px;
+            }
+            
+            .weather-card .temp {
+                font-size: 2.5rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .options {
+                gap: 8px;
+            }
+            
+            .option {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .carousel img {
+                height: 150px;
+            }
+            
+            .carousel-nav {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .api-data {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Advanced Styling & JavaScript Demo</h1>
+            <p>Responsive Design • Interactive Components • API Integration</p>
+        </div>
+
+        <!-- Step 1: Responsive Design with Media Queries -->
+        <section class="section">
+            <h2>1. Responsive Design Using Media Queries</h2>
+            <p>This layout automatically adjusts for different screen sizes using CSS Grid and media queries:</p>
+            
+            <div class="responsive-grid">
+                <div class="card">
+                    <h3>Mobile First</h3>
+                    <p>Optimized for small screens, scales up beautifully</p>
+                </div>
+                <div class="card">
+                    <h3>Tablet Ready</h3>
+                    <p>Perfect layout for medium-sized devices</p>
+                </div>
+                <div class="card">
+                    <h3>Desktop Enhanced</h3>
+                    <p>Full experience on large screens</p>
+                </div>
+                <div class="card">
+                    <h3>Flexible Grid</h3>
+                    <p>Auto-adjusting columns based on space</p>
+                </div>
+            </div>
+            
+            <p><strong>Resize your browser window to see the responsive behavior!</strong></p>
+        </section>
+
+        <!-- Step 2: Interactive Quiz -->
+        <section class="section">
+            <h2>2. Interactive Quiz Using JavaScript</h2>
+            
+            <div class="quiz-container">
+                <div id="quiz-questions"></div>
+                <div class="quiz-controls">
+                    <button class="btn" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                    <button class="btn" id="next-btn" onclick="nextQuestion()">Next</button>
+                    <button class="btn" id="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                    <button class="btn" id="restart-btn" onclick="restartQuiz()" style="display: none;">Restart Quiz</button>
+                </div>
+                <div id="quiz-score" class="score"></div>
+            </div>
+        </section>
+
+        <!-- Step 2: Image Carousel -->
+        <section class="section">
+            <h2>2. Image Carousel Using JavaScript</h2>
+            
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=300&fit=crop" alt="Mountain Lake">
+                    <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=300&fit=crop" alt="Forest Path">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=300&fit=crop" alt="Ocean Sunset">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=300&fit=crop" alt="Desert Landscape">
+                    <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=600&h=300&fit=crop" alt="City Skyline">
+                </div>
+                <button class="carousel-nav carousel-prev" onclick="previousSlide()">&#10094;</button>
+                <button class="carousel-nav carousel-next" onclick="nextSlide()">&#10095;</button>
+            </div>
+            
+            <div class="carousel-dots" id="carousel-dots"></div>
+        </section>
+
+        <!-- Step 3: API Data Fetching -->
+        <section class="section">
+            <h2>3. Fetch Data from APIs Using JavaScript</h2>
+            
+            <div class="api-data">
+                <div class="weather-card" id="weather-data">
+                    <h3>Weather Data</h3>
+                    <div class="loading"></div>
+                    <p>Fetching weather information...</p>
+                </div>
+                
+                <div class="joke-card" id="joke-data">
+                    <div>
+                        <h3>Random Joke</h3>
+                        <div class="loading"></div>
+                        <p>Loading a joke for you...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="fetchNewData()">Refresh Data</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // INTERACTIVE QUIZ FUNCTIONALITY
+        const quizData = [
+            {
+                question: "Which CSS property is used to create responsive layouts?",
+                options: ["display: block", "display: grid", "display: inline", "display: none"],
+                correct: 1
+            },
+            {
+                question: "What does API stand for?",
+                options: ["Application Programming Interface", "Advanced Programming Integration", "Automated Program Interaction", "Application Process Integration"],
+                correct: 0
+            },
+            {
+                question: "Which JavaScript method is used to fetch data from an API?",
+                options: ["getData()", "fetch()", "request()", "load()"],
+                correct: 1
+            },
+            {
+                question: "What is the purpose of media queries in CSS?",
+                options: ["To add animations", "To create responsive designs", "To change colors", "To add fonts"],
+                correct: 1
+            },
+            {
+                question: "Which event is commonly used for interactive elements?",
+                options: ["onload", "onclick", "onscroll", "onhover"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let quizSubmitted = false;
+
+        function initializeQuiz() {
+            renderQuestion();
+            updateNavigation();
+        }
+
+        function renderQuestion() {
+            const questionsContainer = document.getElementById('quiz-questions');
+            const question = quizData[currentQuestion];
+            
+            questionsContainer.innerHTML = `
+                <div class="question">
+                    <h3>Question ${currentQuestion + 1} of ${quizData.length}</h3>
+                    <p>${question.question}</p>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option ${userAnswers[currentQuestion] === index ? 'selected' : ''}" 
+                                 onclick="selectAnswer(${index})">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectAnswer(answerIndex) {
+            if (quizSubmitted) return;
+            
+            userAnswers[currentQuestion] = answerIndex;
+            renderQuestion();
+            updateNavigation();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+                updateNavigation();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === quizData.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+            } else {
+                nextBtn.style.display = 'inline-block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function submitQuiz() {
+            quizSubmitted = true;
+            let score = 0;
+            
+            // Show correct/wrong answers
+            const questionsContainer = document.getElementById('quiz-questions');
+            let resultsHTML = '';
+            
+            quizData.forEach((question, questionIndex) => {
+                const userAnswer = userAnswers[questionIndex];
+                const isCorrect = userAnswer === question.correct;
+                if (isCorrect) score++;
+                
+                resultsHTML += `
+                    <div class="question">
+                        <h3>Question ${questionIndex + 1}</h3>
+                        <p>${question.question}</p>
+                        <div class="options">
+                            ${question.options.map((option, optionIndex) => {
+                                let className = 'option';
+                                if (optionIndex === question.correct) {
+                                    className += ' correct';
+                                } else if (optionIndex === userAnswer && !isCorrect) {
+                                    className += ' wrong';
+                                }
+                                return `<div class="${className}">${option}</div>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            questionsContainer.innerHTML = resultsHTML;
+            
+            const scoreElement = document.getElementById('quiz-score');
+            const percentage = Math.round((score / quizData.length) * 100);
+            scoreElement.innerHTML = `Your Score: ${score}/${quizData.length} (${percentage}%)`;
+            
+            // Update buttons
+            document.getElementById('prev-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('restart-btn').style.display = 'inline-block';
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            userAnswers = [];
+            quizSubmitted = false;
+            document.getElementById('quiz-score').innerHTML = '';
+            document.getElementById('restart-btn').style.display = 'none';
+            document.getElementById('prev-btn').style.display = 'inline-block';
+            initializeQuiz();
+        }
+
+        // IMAGE CAROUSEL FUNCTIONALITY
+        let currentSlide = 0;
+        const totalSlides = 5;
+
+        function initializeCarousel() {
+            // Create dots
+            const dotsContainer = document.getElementById('carousel-dots');
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                if (i === 0) dot.classList.add('active');
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateCarousel() {
+            const carousel = document.getElementById('carousel');
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update dots
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateCarousel();
+        }
+
+        // Auto-advance carousel
+        setInterval(nextSlide, 5000);
+
+        // API DATA FETCHING FUNCTIONALITY
+        async function fetchWeatherData() {
+            const weatherCard = document.getElementById('weather-data');
+            
+            try {
+                // Using a mock weather API response for demonstration
+                const mockWeatherData = {
+                    location: "Delhi, IN",
+                    temperature: Math.floor(Math.random() * 15) + 25, // 25-40°C
+                    condition: ["Sunny", "Partly Cloudy", "Cloudy", "Rainy"][Math.floor(Math.random() * 4)],
+                    humidity: Math.floor(Math.random() * 30) + 40 // 40-70%
+                };
+                
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                weatherCard.innerHTML = `
+                    <h3>${mockWeatherData.location}</h3>
+                    <div class="temp">${mockWeatherData.temperature}°C</div>
+                    <p>${mockWeatherData.condition}</p>
+                    <p>Humidity: ${mockWeatherData.humidity}%</p>
+                `;
+            } catch (error) {
+                weatherCard.innerHTML = `
+                    <h3>Weather Data</h3>
+                    <p>Unable to fetch weather data</p>
+                    <small>Error: ${error.message}</small>
+                `;
+            }
+        }
+
+        async function fetchJokeData() {
+            const jokeCard = document.getElementById('joke-data');
+            
+            try {
+                // Using Official Joke API
+                const response = await fetch('https://official-joke-api.appspot.com/random_joke');
+                const joke = await response.json();
+                
+                jokeCard.innerHTML = `
+                    <div>
+                        <h3>Random Joke</h3>
+                        <p><strong>${joke.setup}</strong></p>
+                        <p><em>${joke.punchline}</em></p>
+                    </div>
+                `;
+            } catch (error) {
+                // Fallback to local jokes if API fails
+                const fallbackJokes = [
+                    {setup: "Why don't scientists trust atoms?", punchline: "Because they make up everything!"},
+                    {setup: "Why did the developer go broke?", punchline: "Because they used up all their cache!"},
+                    {setup: "What do you call a programmer from Finland?", punchline: "Nerdic!"}
+                ];
+                
+                const randomJoke = fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+                
+                jokeCard.innerHTML = `
+                    <div>
+                        <h3>Random Joke</h3>
+                        <p><strong>${randomJoke.setup}</strong></p>
+                        <p><em>${randomJoke.punchline}</em></p>
+                    </div>
+                `;
+            }
+        }
+
+        function fetchNewData() {
+            // Reset to loading state
+            document.getElementById('weather-data').innerHTML = `
+                <h3>Weather Data</h3>
+                <div class="loading"></div>
+                <p>Fetching weather information...</p>
+            `;
+            
+            document.getElementById('joke-data').innerHTML = `
+                <div>
+                    <h3>Random Joke</h3>
+                    <div class="loading"></div>
+                    <p>Loading a joke for you...</p>
+                </div>
+            `;
+            
+            // Fetch new data
+            fetchWeatherData();
+            fetchJokeData();
+        }
+
+        // INITIALIZE ALL COMPONENTS
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeQuiz();
+            initializeCarousel();
+            fetchWeatherData();
+            fetchJokeData();
+        });
+    </script>
+</body>
+</html>
