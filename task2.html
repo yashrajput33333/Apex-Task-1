@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intermediate Web Development Project</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation using Flexbox */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #3498db;
+        }
+
+        /* Main Content Grid Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8em;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        /* Contact Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-control.error {
+            border-color: #e74c3c;
+        }
+
+        .form-control.success {
+            border-color: #27ae60;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message {
+            color: #27ae60;
+            font-size: 0.9em;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        /* To-Do List Styles */
+        .todo-input-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .todo-input {
+            flex: 1;
+        }
+
+        .todo-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .todo-item {
+            background: rgba(52, 152, 219, 0.1);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid #3498db;
+        }
+
+        .todo-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+            border-left-color: #27ae60;
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 1.1em;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9em;
+            border-radius: 15px;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #27ae60, #229954);
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Full-width sections */
+        .full-width-section {
+            grid-column: 1 / -1;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Media Queries */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .todo-input-container {
+                flex-direction: column;
+            }
+            
+            .todo-item {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .todo-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: 1rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hidden class for tab functionality */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Bar with Flexbox -->
+        <nav class="navbar">
+            <div class="logo">WebDev Pro</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showTab('contact')" class="tab-link active">Contact Form</a></li>
+                <li><a href="#" onclick="showTab('todo')" class="tab-link">To-Do List</a></li>
+                <li><a href="#" onclick="showTab('features')" class="tab-link">Features</a></li>
+            </ul>
+        </nav>
+
+        <!-- Contact Form Tab -->
+        <div id="contact-tab" class="tab-content">
+            <div class="main-content">
+                <div class="section">
+                    <h2>📧 Contact Form with Validation</h2>
+                    <form id="contactForm" onsubmit="validateForm(event)">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                            <div class="error-message" id="name-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-control">
+                            <div class="error-message" id="phone-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" class="form-control" required>
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="business">Business Partnership</option>
+                            </select>
+                            <div class="error-message" id="subject-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+                            <div class="error-message" id="message-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                Subscribe to our newsletter
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn">Send Message</button>
+                        
+                        <div class="loading" id="loading">
+                            <div class="spinner"></div>
+                            <p>Sending message...</p>
+                        </div>
+                        
+                        <div class="success-message" id="form-success"></div>
+                    </form>
+                </div>
+
+                <div class="section">
+                    <h2>📊 Form Data Preview</h2>
+                    <div id="form-preview">
+                        <p>Fill out the form to see a live preview of your data here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- To-Do List Tab -->
+        <div id="todo-tab" class="tab-content hidden">
+            <div class="main-content">
+                <div class="section full-width-section">
+                    <h2>✅ Dynamic To-Do List</h2>
+                    
+                    <div class="todo-input-container">
+                        <input type="text" id="todoInput" placeholder="Enter a new task..." class="form-control todo-input">
+                        <button onclick="addTodo()" class="btn">Add Task</button>
+                        <button onclick="clearCompleted()" class="btn btn-danger">Clear Completed</button>
+                    </div>
+
+                    <div class="todo-stats">
+                        <p>Total Tasks: <span id="total-tasks">0</span> | Completed: <span id="completed-tasks">0</span> | Remaining: <span id="remaining-tasks">0</span></p>
+                    </div>
+
+                    <ul id="todoList" class="todo-list">
+                        <!-- Dynamic todo items will be added here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features-tab" class="tab-content hidden">
+            <div class="section full-width-section">
+                <h2>🚀 Features Showcase</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3>Advanced Form Validation</h3>
+                        <p>Real-time validation with custom error messages, email format checking, and required field validation.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Responsive Design</h3>
+                        <p>Built with Flexbox and CSS Grid, adapts perfectly to all screen sizes using media queries.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Dynamic DOM Manipulation</h3>
+                        <p>Interactive to-do list with add, complete, delete functionality and live statistics updates.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Modern UI/UX</h3>
+                        <p>Glassmorphism effects, smooth animations, hover states, and contemporary design patterns.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.add('hidden'));
+            
+            // Remove active class from all tab links
+            const tabLinks = document.querySelectorAll('.tab-link');
+            tabLinks.forEach(link => link.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active class to clicked tab link
+            event.target.classList.add('active');
+        }
+
+        // Form Validation Functions
+        function validateForm(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('contactForm');
+            const formData = new FormData(form);
+            let isValid = true;
+
+            // Clear previous errors
+            clearErrors();
+
+            // Validate name
+            const name = formData.get('name').trim();
+            if (name.length < 2) {
+                showError('name', 'Name must be at least 2 characters long');
+                isValid = false;
+            }
+
+            // Validate email
+            const email = formData.get('email').trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Validate phone (optional but if provided, should be valid)
+            const phone = formData.get('phone').trim();
+            if (phone && !/^\d{10,}$/.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+                showError('phone', 'Please enter a valid phone number');
+                isValid = false;
+            }
+
+            // Validate subject
+            const subject = formData.get('subject');
+            if (!subject) {
+                showError('subject', 'Please select a subject');
+                isValid = false;
+            }
+
+            // Validate message
+            const message = formData.get('message').trim();
+            if (message.length < 10) {
+                showError('message', 'Message must be at least 10 characters long');
+                isValid = false;
+            }
+
+            if (isValid) {
+                submitForm(formData);
+            }
+        }
+
+        function showError(fieldName, message) {
+            const field = document.getElementById(fieldName);
+            const errorElement = document.getElementById(fieldName + '-error');
+            
+            field.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearErrors() {
+            const errorMessages = document.querySelectorAll('.error-message');
+            const formControls = document.querySelectorAll('.form-control');
+            
+            errorMessages.forEach(error => {
+                error.style.display = 'none';
+                error.textContent = '';
+            });
+            
+            formControls.forEach(control => {
+                control.classList.remove('error', 'success');
+            });
+        }
+
+        function submitForm(formData) {
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            
+            // Simulate form submission
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                
+                // Show success message
+                const successMessage = document.getElementById('form-success');
+                successMessage.textContent = 'Thank you! Your message has been sent successfully.';
+                successMessage.style.display = 'block';
+                
+                // Mark fields as success
+                const formControls = document.querySelectorAll('.form-control');
+                formControls.forEach(control => control.classList.add('success'));
+                
+                // Reset form after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('contactForm').reset();
+                    clearErrors();
+                    successMessage.style.display = 'none';
+                    updateFormPreview();
+                }, 3000);
+            }, 2000);
+        }
+
+        // Live Form Preview
+        function updateFormPreview() {
+            const form = document.getElementById('contactForm');
+            const preview = document.getElementById('form-preview');
+            const formData = new FormData(form);
+            
+            let previewHTML = '<h3>Live Preview:</h3>';
+            
+            if (formData.get('name')) previewHTML += `<p><strong>Name:</strong> ${formData.get('name')}</p>`;
+            if (formData.get('email')) previewHTML += `<p><strong>Email:</strong> ${formData.get('email')}</p>`;
+            if (formData.get('phone')) previewHTML += `<p><strong>Phone:</strong> ${formData.get('phone')}</p>`;
+            if (formData.get('subject')) previewHTML += `<p><strong>Subject:</strong> ${formData.get('subject')}</p>`;
+            if (formData.get('message')) previewHTML += `<p><strong>Message:</strong> ${formData.get('message')}</p>`;
+            if (formData.get('newsletter')) previewHTML += `<p><strong>Newsletter:</strong> Subscribed</p>`;
+            
+            if (previewHTML === '<h3>Live Preview:</h3>') {
+                previewHTML = '<p>Fill out the form to see a live preview of your data here.</p>';
+            }
+            
+            preview.innerHTML = previewHTML;
+        }
+
+        // Add event listeners for live preview
+        document.addEventListener('DOMContentLoaded', function() {
+            const formInputs = document.querySelectorAll('#contactForm input, #contactForm select, #contactForm textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('input', updateFormPreview);
+                input.addEventListener('change', updateFormPreview);
+            });
+        });
+
+        // To-Do List Functionality
+        let todos = [];
+        let todoIdCounter = 1;
+
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const text = input.value.trim();
+            
+            if (text === '') {
+                alert('Please enter a task!');
+                return;
+            }
+            
+            const todo = {
+                id: todoIdCounter++,
+                text: text,
+                completed: false,
+                createdAt: new Date()
+            };
+            
+            todos.push(todo);
+            input.value = '';
+            renderTodos();
+            updateStats();
+        }
+
+        function toggleTodo(id) {
+            const todo = todos.find(t => t.id === id);
+            if (todo) {
+                todo.completed = !todo.completed;
+                renderTodos();
+                updateStats();
+            }
+        }
+
+        function deleteTodo(id) {
+            todos = todos.filter(t => t.id !== id);
+            renderTodos();
+            updateStats();
+        }
+
+        function editTodo(id) {
+            const todo = todos.find(t => t.id === id);
+            if (todo) {
+                const newText = prompt('Edit task:', todo.text);
+                if (newText !== null && newText.trim() !== '') {
+                    todo.text = newText.trim();
+                    renderTodos();
+                }
+            }
+        }
+
+        function clearCompleted() {
+            todos = todos.filter(t => !t.completed);
+            renderTodos();
+            updateStats();
+        }
+
+        function renderTodos() {
+            const todoList = document.getElementById('todoList');
+            todoList.innerHTML = '';
+            
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                
+                li.innerHTML = `
+                    <span class="todo-text">${todo.text}</span>
+                    <div class="todo-actions">
+                        <button onclick="toggleTodo(${todo.id})" class="btn btn-small ${todo.completed ? 'btn-danger' : 'btn-success'}">
+                            ${todo.completed ? 'Undo' : 'Complete'}
+                        </button>
+                        <button onclick="editTodo(${todo.id})" class="btn btn-small">Edit</button>
+                        <button onclick="deleteTodo(${todo.id})" class="btn btn-small btn-danger">Delete</button>
+                    </div>
+                `;
+                
+                todoList.appendChild(li);
+            });
+        }
+
+        function updateStats() {
+            const total = todos.length;
+            const completed = todos.filter(t => t.completed).length;
+            const remaining = total - completed;
+            
+            document.getElementById('total-tasks').textContent = total;
+            document.getElementById('completed-tasks').textContent = completed;
+            document.getElementById('remaining-tasks').textContent = remaining;
+        }
+
+        // Allow Enter key to add todo
+        document.getElementById('todoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add some sample todos
+            todos = [
+                { id: 1, text: 'Learn HTML fundamentals', completed: true, createdAt: new Date() },
+                { id: 2, text: 'Master CSS Grid and Flexbox', completed: false, createdAt: new Date() },
+                { id: 3, text: 'Practice JavaScript DOM manipulation', completed: false, createdAt: new Date() }
+            ];
+            todoIdCounter = 4;
+            
+            renderTodos();
+            updateStats();
+        });
+    </script>
+</body>
+</html>
